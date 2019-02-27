@@ -6,6 +6,10 @@ import logo from "./logo.svg";
 import "./App.css";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.getTODORequest();
+  }
+
   _handleInputChange(event) {
     let name = event.target.name;
     let value = event.target.value;
@@ -15,20 +19,35 @@ class App extends Component {
   }
 
   render() {
-    const { userName, changeName } = this.props;
+    const { userName, changeName, todo, todoIsLoading, todoError } = this.props;
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>Hello, {userName}</h1>
-          <input
-            placeholder="name"
-            name="username"
-            onChange={e => this._handleInputChange(e)}
-          />
-          <button onClick={() => changeName(this.state.username)}>
-            change
-          </button>
+          <div>
+            {/* <img src={logo} className="App-logo" alt="logo" />
+            <h1>Hello, {userName}</h1>
+            <input
+              placeholder="name"
+              name="username"
+              onChange={e => this._handleInputChange(e)}
+            />
+            <button onClick={() => changeName(this.state.username)}>
+              change
+            </button> */}
+          </div>
+          <div>
+            <h1>TODO:</h1>
+            {todoIsLoading ? (
+              <div>loading...</div>
+            ) : todoError.message ? (
+              <p>{todoError.message}</p>
+            ) : (
+              <label>
+                <input type="checkbox" />
+                {todo.title}
+              </label>
+            )}
+          </div>
         </header>
       </div>
     );
@@ -37,7 +56,10 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    userName: usersSelectors.getUserName(state)
+    userName: usersSelectors.getUserName(state),
+    todo: usersSelectors.getTODO(state),
+    todoIsLoading: usersSelectors.todoIsLoading(state),
+    todoError: usersSelectors.todoError(state)
   };
 };
 
@@ -45,6 +67,9 @@ const mapDispatchToProps = dispatch => {
   return {
     changeName: name => {
       dispatch(usersActions.changeUserName(name));
+    },
+    getTODORequest: () => {
+      dispatch(usersActions.getTODO());
     }
   };
 };

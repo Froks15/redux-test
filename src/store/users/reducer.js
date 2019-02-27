@@ -1,7 +1,10 @@
 import * as types from "./actionTypes";
 
 const initialState = {
-  name: "Guest"
+  name: "Guest",
+  todo: {},
+  isLoading: false,
+  error: {}
 };
 
 export default (state = initialState, action = {}) => {
@@ -10,6 +13,23 @@ export default (state = initialState, action = {}) => {
       return {
         ...state,
         name: action.payload
+      };
+    case types.GET_TODO_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case types.GET_TODO_SUCCESS:
+      return {
+        ...state,
+        todo: action.payload,
+        isLoading: false
+      };
+    case types.GET_TODO_ERROR:
+      return {
+        ...state,
+        error: action.error,
+        isLoading: false
       };
     default:
       return state;
