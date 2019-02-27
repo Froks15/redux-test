@@ -19,7 +19,14 @@ class App extends Component {
   }
 
   render() {
-    const { userName, changeName, todo, todoIsLoading, todoError } = this.props;
+    const {
+      userName,
+      changeName,
+      todo,
+      todoIsLoading,
+      todoError,
+      todoToggle
+    } = this.props;
     return (
       <div className="App">
         <header className="App-header">
@@ -43,7 +50,13 @@ class App extends Component {
               <p>{todoError.message}</p>
             ) : (
               <label>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={() => {
+                    todoToggle();
+                  }}
+                />
                 {todo.title}
               </label>
             )}
@@ -70,6 +83,9 @@ const mapDispatchToProps = dispatch => {
     },
     getTODORequest: () => {
       dispatch(usersActions.getTODO());
+    },
+    todoToggle: () => {
+      dispatch(usersActions.todoToggle());
     }
   };
 };

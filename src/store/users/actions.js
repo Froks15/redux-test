@@ -7,6 +7,12 @@ export function changeUserName(name) {
   };
 }
 
+export function todoToggle() {
+  return {
+    type: types.TODO_TOGGLE
+  };
+}
+
 export function getTODORequest() {
   return {
     type: types.GET_TODO_REQUEST
